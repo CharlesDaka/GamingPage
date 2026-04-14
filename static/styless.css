@@ -1,0 +1,257 @@
+body {
+  font-family: "Trirong", sans-serif;
+  margin: 0;
+  background: rgb(15, 0, 30);
+  color: white;
+}
+body a {
+  color: white;
+}
+body a:hover {
+  text-decoration: none;
+}
+
+#navbar {
+  width: 100%;
+  height: auto;
+  background-color: indigo;
+  display: flex;
+}
+#navbar .navbar-links {
+  width: 50%;
+  height: 30px;
+  text-align: left;
+  font-weight: bold;
+  margin: 5px;
+  padding: 5px 0 0 0;
+}
+#navbar .navbar-links a {
+  text-decoration: none;
+  margin-right: 10px;
+  padding-right: 5px;
+  color: white;
+}
+#navbar .navbar-links a:hover {
+  text-decoration: underline;
+}
+#navbar .search {
+  width: 50%;
+  margin: 5px;
+  padding: 0 5px;
+  text-align: right;
+}
+#navbar .search input {
+  border-radius: 10px;
+  height: 30px;
+  border: none;
+}
+#navbar .search input:hover {
+  box-shadow: 3px 3px 10px rgb(255, 255, 255);
+}
+#navbar .search input[type=search] {
+  width: 50%;
+}
+#navbar .search input[type=search]:focus {
+  border: none;
+  outline: none;
+}
+#navbar .search .btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.heading {
+  color: rgb(240, 220, 180);
+}
+
+.container {
+  text-align: center;
+  margin: 5px;
+}
+.container .font-effect-shadow-multiple {
+  font-size: 40px;
+}
+.container .game-container {
+  width: 100%;
+}
+.container .game-container .game-card {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+  background-color: rgb(240, 220, 180);
+}
+.container .game-container .game-card img {
+  width: 60%;
+  border-radius: 10px;
+}
+.container .game-container .game-card .details {
+  color: black;
+  width: 40%;
+}
+
+.dbtn {
+  border-radius: 10px;
+  height: 30px;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-weight: bold;
+  background: indigo;
+  color: white;
+}
+.dbtn:hover {
+  box-shadow: 3px 3px 10px aqua;
+}
+
+.am {
+  display: flex;
+}
+.am .aside {
+  border-radius: 5px;
+  width: 30%;
+  background: rgb(240, 220, 180);
+  border: 1px solid;
+}
+.am .aside #iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin: 40px 0;
+}
+
+footer {
+  text-align: center;
+  background: indigo;
+  color: white;
+}
+footer table {
+  width: 100%;
+  text-align: center;
+}
+footer table td {
+  padding: 0;
+  width: 30%;
+}
+footer a {
+  text-decoration: none;
+  color: burlywood;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+footer a:visited {
+  color: burlywood;
+}
+
+.contact {
+  width: 90%;
+  margin: 0 5px 0 50px;
+}
+.contact div {
+  width: 100%;
+  margin: 10px;
+  padding: 0 5px;
+  display: contents;
+}
+.contact div input, .contact div .btn {
+  border-radius: 10px;
+  height: 30px;
+  border: none;
+}
+.contact div input:hover, .contact div .btn:hover {
+  box-shadow: 3px 3px 10px rgb(255, 255, 255);
+}
+.contact div input[type=text], .contact div .btn[type=text] {
+  width: 50%;
+}
+.contact div input[type=text]:focus, .contact div .btn[type=text]:focus {
+  border: none;
+  outline: none;
+}
+.contact div .btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .am {
+    flex-direction: column;
+  }
+  .am .aside {
+    width: 100%;
+  }
+}
+@media (max-width: 425px) {
+  .container {
+    margin: 0;
+    overflow-x: hidden;
+  }
+  #navbar {
+    flex-direction: column;
+  }
+  #navbar .navbar-links {
+    width: 100%;
+    display: flex;
+  }
+  #navbar .search {
+    width: 80%;
+    margin: 5px 0;
+  }
+  #navbar .search input[type=search] {
+    width: 70%;
+  }
+  .heading > .font-effect-shadow-multiple {
+    font-size: 20px;
+  }
+  .game-card {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .game-card img, .game-card .details {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+  }
+  .game-card .details {
+    text-align: center;
+    padding: 0;
+    display: hidden;
+  }
+  .contact {
+    width: fit-content;
+    margin: 0;
+  }
+  .contact div {
+    width: 100%;
+    text-align: center;
+    border: 2px solid;
+    display: block;
+    margin: 0;
+  }
+  .contact div input[type=text] {
+    width: 90%;
+    margin-bottom: 5px;
+  }
+  .contact div .btn {
+    width: 100px;
+    margin-bottom: 5px;
+  }
+  footer table {
+    font-size: 10px;
+  }
+  footer table td {
+    width: fit-content;
+  }
+}
+
+/*# sourceMappingURL=styless.css.map */

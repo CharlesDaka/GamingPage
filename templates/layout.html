@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="index, follow">
+        <meta property="og:title" content="{{ game.title }} - GameVault">
+        <meta property="og:descriptiion" content="Check out free PC games like {{ game.title }} and more">
+        <meta property="og:image" content="{{ game.thumbnail }}">
+        <meta property="og:type" content="website">
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "VideoGame",
+                "name": "{{ game.title }}",
+                "genre": "{{ game.genre }}"
+                "operatingSystem": "Windows",
+                "applicationCategory": "Game"
+            }
+        </script>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong&effect=shadow-multiple">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="../static/styless.css">
+        <link rel="icon" type="image/png" href="static/icon.png">
+    </head>
+    <body>
+        <div id="navbar">
+            <div class="navbar-links">
+                <a href="/" style="border-right: 1px solid white;"><i class="fa-solid fa-desktop"></i> PC GAMES</a>
+                <a href="/tutorials">TUTORIALS</a>
+            </div>
+            <div class="search">
+                <form action="/search" method="get">
+                    <input type="search" name="q" list="game-search" placeholder="Search title" required>
+                    <input type="submit" class="btn" value="Search">
+                    <datalist id="game-search">
+                        {% for game in games %}
+                            <option>{{ game.title }}</option>
+                        {% endfor %}
+                    </datalist>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <header>
+            {% block header %}
+            {% endblock %}
+            </header>
+            <main>
+                {% block main %}
+                {% endblock %}
+            </main>
+         </div>
+        <p><i>Powered by</i> <a href="https://www.freetogame.com/api/">FreeToGame</a> API.</p> 
+    </body>
+    <footer>
+        <div class="footer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Site Info</th>
+                        <th>Support</th>
+                        <th>Community</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="../static/icon.png" alt="GameVault Logo" style="border-radius: 15px; width: 20px; height: 20px;"></td>
+                        <td><a href="/contact" target="_blank">Request a game</a></td>
+                        <td>Discord</td>
+                    </tr>
+                    <tr>
+                        <td>Free PC Games</td>
+                        <td><a href="/contact" target="_blank">Report a Broken Link</a></td>
+                        <td><a href="https://www.youtube.com/@youngcharliesui" target="_blank">YouTube</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://www.freetogame.com/" target="_blank">FreeToGame</a></td>
+                        <td><a href="/contact" target="_blank">Contact Us</a></td>
+                        <td><a href="https://www.tiktok.com/@youngcharlieplays" target="_blank">TikTok</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>&copy; 2026 GameVault. All Rights Reserved</p>
+            <a href="#navbar">Back To Top</a>
+        </div> 
+    </footer>
+</html>

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block header %}
+<h1 class="font-effect-shadow-multiple" 
+    style="font-size: 30px;">CONTACT US</h1>
+{% endblock %}
+
+{% block main %}
+    <div class="contact">
+        <div style="text-align: center;">
+            <p>Email: <a href="mailto:charlesdaka2025@gmail.com/">Charlesdaka2025@gmail.com</a></p>
+            <p>WhatsApp: <a href="https://wa.me/26770553636" target="_blank">WhatsApp Us</a></p>
+        </div>
+        <div>
+            <h4>REQUEST A GAME</h4>
+            <small>Which game do you want to see?</small>
+            <form action="/requested_games" method="post">
+                <label for="game_name">GAME NAME:</label>
+                <input type="text" id="game_name" name="game_name" aria-label="Game Title" required>
+                <button type="submit" class="btn">SUBMIT</button> 
+            </form>
+        </div>
+        <div>
+            <h4>REPORT A BROKEN LINK</h4>
+            <small>Which game has a broken link?</small>
+            <form action="/report" method="post">
+                <label for="report">GAME NAME:</label>
+                <input type="text" id="report" name="report" aria-label="Game Title" required>
+                <button type="submit" class="btn">REPORT</button> 
+            </form>
+        </div>
+    </div>
+{% endblock %}
