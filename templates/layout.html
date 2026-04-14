@@ -5,16 +5,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="index, follow">
-        <meta property="og:title" content="{{ game.title }} - GameVault">
-        <meta property="og:descriptiion" content="Check out free PC games like {{ game.title }} and more">
-        <meta property="og:image" content="{{ game.thumbnail }}">
+        <meta property="og:title" content="{% if game %} {{ game.title }} {% else %}Home{% endif %} - GameVault">
+        <meta property="og:descriptiion" content="Check out free PC games like {% if game %} {{ game.title }} {% else %}FORTNITE{% endif %} and more">
+        <meta property="og:image" content="{% if game %} {{ game.thumbnail }}{% else %}Image{% endif %}">
         <meta property="og:type" content="website">
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
                 "@type": "VideoGame",
-                "name": "{{ game.title }}",
-                "genre": "{{ game.genre }}"
+                "name": "{% if game %} {{ game.title }}{% else %}Fortnite{% endif %}",
+                "genre": "{% if game %} {{ game.genre }}{% else %}Shooter{% endif %}"
                 "operatingSystem": "Windows",
                 "applicationCategory": "Game"
             }
