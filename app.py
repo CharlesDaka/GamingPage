@@ -54,6 +54,10 @@ def import_games():
 def health_check():
     return "OK", 200
 
+@app.route("/ads.txt")
+def ads_txt():
+    return send_from_directory(app.static_folder, 'ads.txt')
+
 @app.route("/layout")
 def layout():
     game = db.execute("SELECT * FROM games")
