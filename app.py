@@ -50,6 +50,10 @@ def import_games():
         print(f"General Error: {e}")
         return "An unexpected error occured while updating the database."
 
+@app.route("/health-check")
+def health_check():
+    return "OK", 200
+
 @app.route("/layout")
 def layout():
     game = db.execute("SELECT * FROM games")
