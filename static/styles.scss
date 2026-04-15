@@ -213,9 +213,10 @@ footer {
             width: 100%;
         }
     }
-
     .container {
-        
+        margin: 0;
+        overflow-x: hidden;
+
         .game-container {
 
             .game-card {
@@ -236,13 +237,6 @@ footer {
             }
         }
     }
-}
-
-@media (max-width: 425px) {
-    .container {
-        margin: 0;
-        overflow-x: hidden;
-    }
     #navbar {
         flex-direction: column;
 
@@ -259,11 +253,6 @@ footer {
             }
         }
     }
-
-    .heading > .font-effect-shadow-multiple {
-        font-size: 20px;
-    }
-
     .contact {
         width: fit-content;
         margin: 0;
@@ -286,7 +275,6 @@ footer {
             }
         }
     }
-
     footer {
         table {
             font-size: 10px;
@@ -295,5 +283,12 @@ footer {
                 width: fit-content;
             }
         }
+    }
+}
+
+@media (max-width: 425px) {
+
+    .heading > .font-effect-shadow-multiple {
+        font-size: 20px;
     }
 }

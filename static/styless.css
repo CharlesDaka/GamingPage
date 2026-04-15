@@ -185,6 +185,10 @@ footer a:visited {
   .am .aside {
     width: 100%;
   }
+  .container {
+    margin: 0;
+    overflow-x: hidden;
+  }
   .container .game-container .game-card {
     flex-direction: column;
     align-items: center;
@@ -200,12 +204,6 @@ footer a:visited {
     padding: 0;
     display: hidden;
   }
-}
-@media (max-width: 425px) {
-  .container {
-    margin: 0;
-    overflow-x: hidden;
-  }
   #navbar {
     flex-direction: column;
   }
@@ -219,9 +217,6 @@ footer a:visited {
   }
   #navbar .search input[type=search] {
     width: 70%;
-  }
-  .heading > .font-effect-shadow-multiple {
-    font-size: 20px;
   }
   .contact {
     width: fit-content;
@@ -247,6 +242,11 @@ footer a:visited {
   }
   footer table td {
     width: fit-content;
+  }
+}
+@media (max-width: 425px) {
+  .heading > .font-effect-shadow-multiple {
+    font-size: 20px;
   }
 }
 
