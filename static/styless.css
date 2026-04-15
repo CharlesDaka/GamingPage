@@ -185,6 +185,21 @@ footer a:visited {
   .am .aside {
     width: 100%;
   }
+  .container .game-container .game-card {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .container .game-container .game-card img, .container .game-container .game-card .details {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+  }
+  .container .game-container .game-card .details {
+    text-align: center;
+    padding: 0;
+    display: hidden;
+  }
 }
 @media (max-width: 425px) {
   .container {
@@ -207,21 +222,6 @@ footer a:visited {
   }
   .heading > .font-effect-shadow-multiple {
     font-size: 20px;
-  }
-  .game-card {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  .game-card img, .game-card .details {
-    max-width: 100%;
-    width: 100%;
-    display: block;
-  }
-  .game-card .details {
-    text-align: center;
-    padding: 0;
-    display: hidden;
   }
   .contact {
     width: fit-content;

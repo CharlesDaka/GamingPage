@@ -213,6 +213,29 @@ footer {
             width: 100%;
         }
     }
+
+    .container {
+        
+        .game-container {
+
+            .game-card {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+
+                img, .details {
+                    max-width: 100%;
+                    width: 100%;
+                    display: block;
+                }
+                .details {
+                    text-align: center;
+                    padding: 0;
+                    display: hidden;
+                }
+            }
+        }
+    }
 }
 
 @media (max-width: 425px) {
@@ -239,23 +262,6 @@ footer {
 
     .heading > .font-effect-shadow-multiple {
         font-size: 20px;
-    }
-
-    .game-card {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        img, .details {
-            max-width: 100%;
-            width: 100%;
-            display: block;
-        }
-        .details {
-            text-align: center;
-            padding: 0;
-            display: hidden;
-        }
     }
 
     .contact {
