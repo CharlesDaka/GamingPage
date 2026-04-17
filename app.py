@@ -1,17 +1,34 @@
 # FreeToGame API 
 
 import requests
+import sys
+import os
 
 from cs50 import SQL
 from flask import Flask, render_template, url_for, request, abort, redirect, flash
 from datetime import datetime
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
+load_dotenv
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '3ba1c877ad974646ab76b69b3c58d17b'
-db = SQL("sqlite:///games.db")
 
+# Connect my Supabase online database and my local database
+# --- supabase db ---
+supabase: Client = create_client(
+    os.environ.get("SUPABASE_URL"),
+    os.environ.get("SUPABASE_KEY")
+)
+
+# --- local db (for displaying games) ---
+db = SQL('sqlite:///games.db')
+
+# import games from an API to my database
 @app.route("/import_games")
 def import_games():
+    # key for RAWG API
     key = request.args.get('key')
     if key != '3ba1c877ad974646ab76b69b3c58d17b':
         abort(403)
@@ -50,10 +67,12 @@ def import_games():
         print(f"General Error: {e}")
         return "An unexpected error occured while updating the database."
 
+# check for errors during deploying
 @app.route("/health-check")
 def health_check():
     return "OK", 200
 
+# ads route for google adsense
 @app.route("/ads.txt")
 def ads_txt():
     return send_from_directory(app.static_folder, 'ads.txt')
@@ -63,6 +82,7 @@ def layout():
     game = db.execute("SELECT * FROM games")
     return render_template("layout.html", game=game)
 
+# homepage of GameVault Web Application
 @app.route("/")
 def homepage():
     # Get the current page from the URL (default to page 1) 
@@ -76,51 +96,82 @@ def homepage():
     has_next = offset + per_page < total_games
     return render_template('index.html', games=games, has_next=has_next, page=page)
 
+# gaming tutorials from my youtube channel 'Youngcharlie Tutorials'
 @app.route("/tutorials")
 def tutorials():
     return render_template("tutorials.html")
 
+# let users search for games (game title)
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == 'GET':
+        # get users input
         query = request.args.get("q")
         if query:
+            # check if the game exits in the database
             games = db.execute("SELECT * FROM games WHERE title LIKE ?", "%" + query + "%")
+            # count how many games were found
             result = db.execute("SELECT COUNT(*) AS total FROM games WHERE title LIKE ?", "%" + query + "%")
             game_count = result[0]['total']
         else:
+            # if the user hasn't provided query yet, set the list to empty
             games = []
     return render_template("search_results.html", games=games, game_count=game_count, query=query)
 
+# contact us section
 @app.route("/contact")
 def contactus():
     return render_template("contact.html")
 
+# let users request for games that aren't on my database
 @app.route("/requested_games", methods=["GET", "POST"])
 def requested_games():
     if request.method == 'POST':
+        # get user's input
         game = request.form.get("game_name")
+        # if no input was provided return error
         if not game:
             return "Error 67: Must Provide Game Name"
+        # convert user input into uppercase
         game_name = game.upper()
+        # get current time and date
         date = datetime.now()
-        add_game_db = db.execute("INSERT INTO requested_games (game_name, date) VALUES (?, ?)",
-                                  game_name, date)
-        return "THANK YOU FOR REQUESTING, WE WILL MAKE AN ANNOUNCEMENT ON OUR SOCIAL MEADIA PLATFORMS!"
+        # insert user input and datetime into database
+        response = supabase.table('requested_games').insert({
+            "game": game_name, "date": date
+        })
+        # print the added row
+        row = response.data
+        print (f"SUCCESSFULLY ADDED {row['game']}")
+        return "SUCCEFULLY ADDED THE GAME TO THE WAITLIST, WE WILL ANNOUNCE ON OUR SOCIAL MEDIA PLATFORMS!"
     else:
         return render_template("contact.html")
 
+# let users report games with broken links (game title)
 @app.route("/report", methods=["GET", "POST"])
 def report():
     if request.method == 'POST':
+        # get user's input
         game = request.form.get("report")
-        if game:
-            date = datetime.now()
-            report_game_db = ("INSERT INTO reported_links (game, date) VALUES (?, ?)",
-                               game, date)
-            return "THANK YOU FOR REPORTING, WE WILL MAKE AN ANNOUNCEMENT ON OUR SOCIAL MEADIA PLATFORMS!"
+        # if no input, return error
+        if not game:
+            return "ERROR 67: Must Provide Game"
+        # convert user input to uppercase
+        game_name = game.upper()
+        # get current time and date
+        date = datetime.now()
+        # insert reported game(s) into database
+        response = supabase.table(broken_links).insert({
+            "game": game_name, "date": date
+        })
+        # print when link is reported
+        row = response.data
+        print(f"Broken link reported: {row['game']}")
+        return "THANK YOU FOR REPORTING, WE WILL MAKE AN ANNOUNCEMENT ON OUR SOCIAL MEADIA PLATFORMS!"
     else:
         return render_template("contact.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='5000',debug=True)
+
+# Code by Charles Daka
