@@ -13,7 +13,8 @@ from dotenv import load_dotenv
 load_dotenv
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenvron.get('SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+rawg_key = os.environ.get('ADMIN_SECRET_KEY')
 
 # Connect my Supabase online database and my local database
 # --- supabase db ---
@@ -25,15 +26,19 @@ supabase = create_client(url, key)
 db = SQL('sqlite:///games.db')
 
 # import games from an API to my database
-@app.route("/import_games")
+@app.route("/games/import_games")
 def import_games():
+    # admin key
+    admin = request.form.get('admin_key')
+    if admin != rawg_key:
+        abort(403)
     # key for RAWG API
     key = request.args.get('key')
-    if key != '3ba1c877ad974646ab76b69b3c58d17b':
+    if key != rawg_key:
         abort(403)
     try:
         url = "https://www.freetogame.com/api/games"
-        rawg = "https://api.rawg.io/api/games?key=3ba1c877ad974646ab76b69b3c58d17b"
+        rawg = os.getenv('RAWG_URL')
         response = requests.get(url, timeout=10)
         # this triggers an exception if an API returns an error
         response.raise_for_status()
@@ -138,7 +143,7 @@ def requested_games():
         # insert user input and datetime into database
         response = supabase.table('requested_games').insert({
             "game": game_name, "date": date
-        })
+        }).execute()
         # print the added row
         row = response.data
         print (f"SUCCESSFULLY ADDED {row['game']}")
@@ -162,7 +167,7 @@ def report():
         # insert reported game(s) into database
         response = supabase.table(broken_links).insert({
             "game": game_name, "date": date
-        })
+        }).execute()
         # print when link is reported
         row = response.data
         print(f"Broken link reported: {row['game']}")
