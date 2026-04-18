@@ -7,20 +7,19 @@ import os
 from cs50 import SQL
 from flask import Flask, render_template, url_for, request, abort, redirect, flash
 from datetime import datetime
-from supabase import create_client, Client
+from supabase import create_client
 from dotenv import load_dotenv
 
 load_dotenv
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '3ba1c877ad974646ab76b69b3c58d17b'
+app.config['SECRET_KEY'] = os.getenvron.get('SECRET_KEY')
 
 # Connect my Supabase online database and my local database
 # --- supabase db ---
-supabase: Client = create_client(
-    os.environ.get("SUPABASE_URL"),
-    os.environ.get("SUPABASE_KEY")
-)
+url = os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
+supabase = create_client(url, key)
 
 # --- local db (for displaying games) ---
 db = SQL('sqlite:///games.db')
