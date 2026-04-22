@@ -7,7 +7,6 @@ import os
 from cs50 import SQL
 from flask import Flask, render_template, url_for, request, abort, redirect, flash
 from datetime import datetime
-from supabase import create_client
 from dotenv import load_dotenv
 
 load_dotenv
@@ -18,9 +17,7 @@ rawg_key = os.environ.get('ADMIN_SECRET_KEY')
 
 # Connect my Supabase online database and my local database
 # --- supabase db ---
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
-supabase = create_client(url, key)
+remote_db = SQL(os.environ.get('SUPABASE_URL'))
 
 # --- local db (for displaying games) ---
 db = SQL('sqlite:///games.db')
@@ -138,15 +135,8 @@ def requested_games():
             return "Error 67: Must Provide Game Name"
         # convert user input into uppercase
         game_name = game.upper()
-        # get current time and date
-        date = datetime.now()
         # insert user input and datetime into database
-        response = supabase.table('requested_games').insert({
-            "game": game_name, "date": date
-        }).execute()
-        # print the added row
-        row = response.data
-        print (f"SUCCESSFULLY ADDED {row['game']}")
+        response = remote_db.execute("INSERT INTO requested_games (game) VALUES (?)", game_name)
         return "SUCCEFULLY ADDED THE GAME TO THE WAITLIST, WE WILL ANNOUNCE ON OUR SOCIAL MEDIA PLATFORMS!"
     else:
         return render_template("contact.html")
@@ -162,15 +152,8 @@ def report():
             return "ERROR 67: Must Provide Game"
         # convert user input to uppercase
         game_name = game.upper()
-        # get current time and date
-        date = datetime.now()
         # insert reported game(s) into database
-        response = supabase.table(broken_links).insert({
-            "game": game_name, "date": date
-        }).execute()
-        # print when link is reported
-        row = response.data
-        print(f"Broken link reported: {row['game']}")
+        response = remote_db.execute("INSERT INTO reported_games (game) VALUES (?)", game_name)
         return "THANK YOU FOR REPORTING, WE WILL MAKE AN ANNOUNCEMENT ON OUR SOCIAL MEADIA PLATFORMS!"
     else:
         return render_template("contact.html")
