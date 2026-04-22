@@ -17,7 +17,8 @@ rawg_key = os.environ.get('ADMIN_SECRET_KEY')
 
 # Connect my Supabase online database and my local database
 # --- supabase db ---
-remote_db = SQL(os.environ.get('SUPABASE_URL'))
+url = os.environ.get('SUPABASE_URL')
+remote_db = SQL(url)
 
 # --- local db (for displaying games) ---
 db = SQL('sqlite:///games.db')
