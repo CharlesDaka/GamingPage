@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}News{% endblock %}
+
+{% block main %}
+    <h1 class="gamepulse"><span class="bi bi-globe"></span> Loadouts Daily News <span class="fab fa-xbox"></span></h1>
+
+    <div class="news-and-right-side-bar">
+        <div class="news-section">
+            {% for article in data %}
+                <div class="news-card">
+                    <div class="news-card-image">
+                        {% if article.image_url %}
+                            <img src="{{ article.image_url }}">
+                        {% else %}
+                            <img src="../../static/placeholder.png">
+                        {% endif %}
+                    </div>
+                    <div class="news-card-content">
+                        <small>Published at: {{ article.pubDate }}</small>
+                        <h5>{{ article.title }}</h5>
+                        <small>Source: <a href="{{ article.source_url }}" target="_blank" style="text-decoration: none;">
+                            <img src="{{ article.source_icon }}" alt="{{ article.source_name }}" width="16" height="16">
+                            {{ article.source_name }}
+                            </a>
+                        </small>
+                        <a href="{{ article.link }}" target="_blank"><button class="read-more-btn">Read More</button></a>
+                    </div>
+                </div>
+                
+            {% empty %}
+                <h3>no articles found, please try again later.</h3>
+            {% endfor %}
+        </div>
+
+        <div class="right_side_bar news-right-side-bar">
+        </div>
+    </div>
+
+{% endblock %}

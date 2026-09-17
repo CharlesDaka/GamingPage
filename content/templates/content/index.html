@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}   {% block title %}Content{% endblock %}
+
+{% block main %}
+    <h1 class="gamepulse" style="font-size: 50px;"><span class="fab fa-youtube"></span> Loadouts Daily Content <span class="fab fa-twitch"></span></h1>
+    
+    <h5>For detailed articles please visit <a href="https://charlietutorials.blogspot.com/">the Blog page</a>.</h5>
+
+    <div class="content-and-sidebar">
+        <div class="content-section">
+            {% if not contents %}
+                <p>No content available right now, visit the <a href="https://charlietutorials.blogspot.com/">Blog page</a> for updates.</p>
+            {% else %}
+                {% for content in contents %}
+                    <div class="content-card">
+                        <div class="content-card-image">
+                            <img src="{{ content.thumbnail }}" alt="{{ content.title }}">
+                        </div>
+                        <div class="content-card-content">
+                            <h3>{{ content.title }}</h3>
+                            <p><i>Category</i>: {{ content.Category.name }}</p>
+                            <small><i>Date Published</i>: {{ content.date_posted }}</small>
+                            <a href="{{ content.article_url }}" target="_blank"><button class="article-url-btn read-more-btn">Read More</button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="right_side_bar">
+        </div>
+    </div>
+{% endblock %}

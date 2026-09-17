@@ -1,0 +1,74 @@
+{% extends "layout.html" %}  {% block title %}Games{% endblock %}
+
+{% block main %}
+<div class="games-page">
+    <h1 class="gamepulse"><span class="fab fa-playstation"></span> Loadouts Daily <span class="fab fa-xbox"></span></h1>
+
+    <ul class="list-inline">
+        <li class="list-inline-item"><i class="fas fa-globe"></i> All</li>
+        <li class="list-inline-item" data-platform="PC"><i class="fab fa-windows"></i> PC</li>
+        <li class="list-inline-item" data-platform="PlayStation"><i class="fab fa-playstation"></i> PlayStation</li>
+        <li class="list-inline-item" data-platform="Xbox"><i class="fab fa-xbox"></i> Xbox</li>
+        <li class="list-inline-item" data-platform="Android"><i class="fab fa-android"></i> Android</li>
+        <li class="list-inline-item" data-platform="iOS"><i class="fab fa-apple"></i> iOS</li>
+        <li class="list-inline-item" data-platform="macOS"><i class="fab fa-apple"></i> macOS</li>
+        <li class="list-inline-item" data-platform="Linux"><i class="fab fa-linux"></i> Linux</li>
+        <li class="list-inline-item" data-platform="Nintendo"><i class="bi bi-nintendo-switch"></i> Nintendo</li>
+    </ul>
+
+    <ul class="list-inline platform_full_name">
+    </ul>
+
+    <div class="order_by_container">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select">
+            <option value="-rating">Rating (Highest first)</option>
+            <option value="rating">Rating (Lowest first)</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="-name">Name (Z-A)</a></option>
+            <option value="-released">Release Date (Newest first)</option>
+            <option value="released">Release Date (Oldest first)</option>
+        </select>
+    </div>
+
+    <div class="cyberpunk-error-theme">
+    </div>
+
+    <div class="game-fetching">
+        <div class="cyber-xbox-loader">
+            <div class="xbox-orb"></div>
+            <div class="glitch-text" data-text="FETCHING GAMES..."></div>
+            <div class="loading-stats">
+                <span class="pulse">MAINFRAME: LINKED</span>
+                <span class="pulse delay platform-on-loading"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="games_and_sidebar">
+        <div id="game_section">          
+        </div>
+
+        <div class="right_side_bar">
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example" class="pagination">
+    </nav>
+</div>
+
+<div class="game-details-page">
+    <h1 class="gamepulse"><span class="fab fa-playstation"></span> Loadouts Daily <span class="fab fa-xbox"></span></h1>
+
+    <div class="game-details-and-sidebar" style="display: flex;">
+        <div id="game-details-section">          
+        </div>
+
+        <div class="right_side_bar">
+        </div>
+    </div>    
+</div>
+
+
+{% endblock %}
