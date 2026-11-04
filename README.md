@@ -1,97 +1,199 @@
-# LoadoutsDaily (GamePulse)
+# GamePulse
 
-LoadoutsDaily is a gaming discovery and editorial web application built with Django, JavaScript, HTML, CSS, and external gaming APIs. It gives visitors one place to discover games, filter them by platform, search for titles, sort results, inspect detailed game information, read current gaming news, and browse a small collection of database-backed articles. The project is designed as a responsive web application so the main workflows remain usable on desktop and mobile screens.
+GamePulse is a Django-based gaming discovery and editorial web app that combines game listings, search, filters, detailed pages, and gaming news into one user experience. It pulls content from external APIs, normalizes the responses, and renders them in a responsive frontend built with HTML, CSS, JavaScript, and Django templates.
 
-## Distinctiveness and Complexity
+## Overview
 
-LoadoutsDaily is distinct from a basic CRUD site because it combines several related but different sources of information into one gaming-focused experience. The game catalogue is retrieved from the RAWG API rather than being a fixed list stored in the page. The browser communicates with Django JSON endpoints using JavaScript, while Django acts as a server-side integration layer that adds platform filtering, search, sorting, pagination, response normalization, caching, and fallback behavior. When RAWG is unavailable, the application attempts to use FreeToGame data and normalizes its different field names into the shape expected by the front end.
+The project allows users to:
 
-The main games workflow is more complex than a simple list page. Users can select PC, PlayStation, Xbox, Nintendo, iOS, Android, macOS, Linux, or all platforms; search for a title; sort by rating, name, or release date; move through result pages; and open a detailed view without leaving the page. The details view can display descriptions, release information, ratings, genres, developers, publishers, supported platforms, system requirements, screenshots, trailers, stores, additional content, and an official website when the API provides those values. Loading states, error states, image fallbacks, and empty search results are represented in the interface.
+- browse games from RAWG
+- filter by platform
+- search by title
+- sort results by rating, name, or release date
+- paginate results while preserving filters and sort state
+- view detailed game information, screenshots, stores, trailers, and requirements
+- read gaming news from NewsData
+- browse editorial content stored in the local database
 
-The application also has two separate content workflows. The News app retrieves current gaming articles through NewsData and caches the response. The Content app uses Django models and the admin interface to manage editorial entries and categories. This means the project demonstrates both external API integration and persistent local database content. The shared layout, navigation, search form, responsive grids, platform icons, animated loading interface, screenshot presentation, and neon cyberpunk visual system make the application a cohesive product rather than unrelated pages.
+This is a full-stack project that demonstrates API integration, frontend interactivity, Django models, and deployment-ready configuration patterns.
 
-The project satisfies the course requirement to use Django on the back end, including models, and JavaScript on the front end. Django supplies routing, views, model access, admin management, API proxy endpoints, caching, and database configuration. JavaScript supplies asynchronous requests, dynamic game-card rendering, search, sorting, pagination, game details, trailer loading, and client-side view transitions. The SCSS source and compiled CSS provide desktop and mobile layouts: game, news, and content cards use two columns on larger screens and one column on smaller screens, while sidebars stack below the main content.
+## Tech Stack
 
-## Features
-
-- Browse RAWG games with platform filters for major desktop, console, mobile, and Linux platforms.
-- Search for games by title from the shared navigation bar.
-- Sort games by rating, name, and release date.
-- Paginate game and search results while retaining the selected platform and sort order.
-- View detailed game data, screenshots, trailers, stores, DLC, requirements, and links.
-- Cache external API responses for twelve hours to reduce repeated requests.
-- Fall back to FreeToGame when the RAWG request fails.
-- Read current gaming news supplied by NewsData.
-- Browse up to ten recent editorial content entries from the local database.
-- Manage content and categories through Django admin.
-- Use the responsive layout on desktop and mobile screen sizes.
+- Python 3.11+
+- Django 5+
+- PostgreSQL (recommended for production)
+- SQLite (default for local development)
+- JavaScript
+- HTML/CSS
+- RAWG API
+- NewsData API
+- FreeToGame fallback
 
 ## Project Structure
 
-- `manage.py` is Django's command-line entry point.
-- `GamePulse/settings.py` configures installed apps, middleware, environment variables, the database, static files, and the custom user model. `urls.py` connects the games, news, and content applications. `asgi.py` and `wsgi.py` provide deployment entry points.
-- `games/models.py` defines the custom `User` model and the `Game` model. `games/views.py` contains the homepage, RAWG and FreeToGame integration, normalization, caching, game details, and trailer endpoints. `games/urls.py` defines those routes. `games/templates/games/index.html` provides the game-page shell, while `games/tests.py` tests API-data normalization.
-- `news/views.py` retrieves and caches NewsData articles. `news/templates/news/news.html` renders the news page, and `news/static/placeholder.png` is used when an article has no image.
-- `content/models.py` defines `Content` and `Categories`. `content/views.py` retrieves recent records, `content/admin.py` registers them for administration, and `content/templates/content/index.html` renders the content cards. The migration files create and update these tables.
-- `templates/layout.html` contains the shared navigation, search form, external icon libraries, stylesheet links, footer, and API attribution.
-- `static/js/games.js` controls asynchronous game requests, rendering, search, sorting, pagination, game details, screenshots, and trailers. `static/styles.scss` is the stylesheet source; `static/styles.css` is its compiled output and `styles.css.map` is the source map. The image directory contains the favicon and visual assets. `static/js/sw.js` contains the service-worker script.
-- `requirements.txt` lists the Python dependencies, and `.env` stores local API credentials without being committed.
+- `GamePulse/` — project settings and Django config
+- `games/` — game browsing, filtering, search, sorts, and detailed game views
+- `news/` — news fetching and rendering
+- `content/` — local database-backed article content
+- `templates/` — shared layout and base HTML
+- `static/` — CSS, JS, images, and service worker
+- `manage.py` — Django project entry point
+- `.env` — local environment secrets (not committed)
+- `.env.example` — example environment template
+- `requirements.txt` — Python dependencies
 
-## Setup and Running
+## Features
 
-Python 3.13 or a compatible Python version, PostgreSQL, and a modern browser are recommended. From the project directory, create and activate a virtual environment:
+- platform-based filtering for PC, PlayStation, Xbox, Nintendo, mobile, and Linux
+- shared navigation search across pages
+- sorting and pagination with state retention
+- dynamic game cards rendered in JavaScript
+- detailed game page with metadata and media
+- external API fallback when RAWG fails
+- news section powered by NewsData
+- admin-managed editorial content
+- responsive layout for desktop and mobile screens
+
+## Local Development Setup
+
+1. Clone the repository.
+2. Create and activate a virtual environment:
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
+```
+
+3. Install dependencies:
+
+```powershell
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the project root with credentials for the services used by the application:
+4. Create a `.env` file in the project root using the example template:
 
-```text
-RAWG_KEY=e77dbf9417b740a38e52ee1aadbb37e7
-NEWSDATA_API_KEY=pub_30c82df0142d40cbb9b5ea5fc6c8073f
+```env
+DJANGO_SECRET_KEY=your-secret-key
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+RAWG_KEY=your-rawg-key
+NEWSDATA_API_KEY=your-newsdata-key
+
+DB_ENGINE=sqlite3
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=your-db-password
+DB_HOST=localhost
+DB_PORT=5432
 ```
 
-Configure PostgreSQL credentials in `GamePulse/settings.py` or replace the database configuration with a local development database. Do not publish API keys, database passwords, or Django secret keys. Apply migrations and optionally create an administrator account:
+5. Apply migrations:
 
 ```powershell
 python manage.py migrate
+```
+
+6. Create an admin user if needed:
+
+```powershell
 python manage.py createsuperuser
+```
+
+7. Start the server:
+
+```powershell
 python manage.py runserver
 ```
 
-Open `http://127.0.0.1:8000/`. The admin interface is available at the admin route configured in `GamePulse/urls.py`. When editing SCSS, compile it with Dart Sass, which avoids the native Visual C++ build requirements associated with some Python Sass packages:
+Open http://127.0.0.1:8000/ in your browser.
+
+## Environment Variables
+
+The app reads configuration from environment variables instead of hardcoding secrets. Required values include:
+
+- `DJANGO_SECRET_KEY`
+- `DJANGO_ALLOWED_HOSTS`
+- `RAWG_KEY`
+- `NEWSDATA_API_KEY`
+- `DB_ENGINE`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_HOST`
+- `DB_PORT`
+
+Keep `.env` local and never commit it to version control.
+
+## Production Deployment Checklist
+
+Before deploying, complete the following:
+
+1. Set `DEBUG = False` inside the Django settings.
+2. Replace localhost-only hosts with your real production domain(s).
+3. Use PostgreSQL instead of SQLite for production.
+4. Generate a strong `DJANGO_SECRET_KEY`.
+5. Add your domain to `DJANGO_ALLOWED_HOSTS`.
+6. Configure HTTPS and set secure cookies.
+7. Ensure static files are collected and served correctly.
+8. Run database migrations on the production server.
+9. Create a production admin account.
+10. Test the game search, sorting, filtering, and pagination flows with live API keys.
+11. Confirm that `.env` is not included in the deployment artifact.
+12. Set up monitoring and logs for errors and API failures.
+13. Test the app on a live HTTPS URL before announcing the site.
+
+## Recommended Deployment Options
+
+You can deploy this app on any platform that supports Django:
+
+- Render
+- Railway
+- Fly.io
+- Heroku
+- DigitalOcean App Platform
+- Azure App Service
+- VPS with Nginx + Gunicorn
+
+For a basic production setup, use:
+
+- PostgreSQL database
+- Gunicorn or similar WSGI server
+- static file serving via WhiteNoise or a CDN
+- environment variables for all secrets
+
+## Production Server Commands
+
+When deploying, the usual production flow is:
 
 ```powershell
-sass --watch static/styles.scss:static/styles.css
-```
-
-The dependency file includes `newsdataapi`, matching the import used by the News app. Keep the real `.env` file local and use `.env.example` as the safe template for other environments.
-
-## Testing
-
-The current automated test suite contains a normalization test for FreeToGame-shaped data. Run it with:
-
-```powershell
-python manage.py test
-```
-
-Django's project validation can be run with:
-
-```powershell
+python manage.py migrate
+python manage.py collectstatic --noinput
 python manage.py check
 ```
 
-At the time this README was written, both commands completed successfully. The project would benefit from additional tests for URL routing, API success and failure responses, caching, pagination, search, sorting, NewsData errors, database models, admin behavior, and JavaScript interactions. Mobile layouts should also be checked on real devices or browser emulation before submission.
+Then start the server with a production WSGI application, for example:
 
-## APIs and Attribution
+```powershell
+gunicorn GamePulse.wsgi:application
+```
 
-The project uses RAWG for game data, NewsData for gaming news, and FreeToGame as a fallback source. The shared page footer credits these services. API availability, rate limits, response formats, and licensing should be reviewed before deployment. The site is intended as a learning project and should keep credentials server-side.
+## Testing
 
-## CS50 Requirement Assessment
+Run the app checks locally before deployment:
 
-Based on the current codebase, the project appears to satisfy the core technical requirements: it is sufficiently more involved than a small introductory exercise, uses Django and multiple Django models, uses JavaScript substantially on the front end, and includes responsive CSS behavior. Its API proxying, normalization, fallback service, caching, asynchronous rendering, detailed game view, news integration, admin-managed content, and responsive layouts provide credible evidence of complexity and distinctiveness.
+```powershell
+python manage.py check
+python manage.py test
+```
 
-The main submission risks are documentation and polish rather than the central idea. This README now explains the project, files, setup, and complexity as requested. Before submitting, confirm that the real `.env` file is excluded from the submitted archive, rotate any API keys or database credentials that have ever been exposed, confirm that all external scripts and service-worker code are intentional, and test the complete application with valid API keys. The most important game workflows now have automated tests, but additional tests for news, content, admin behavior, and browser interactions would strengthen the submission. These steps would make the project easier for staff to install, review, and distinguish from a generic API listing application.
+If you change API logic or the frontend filtering behavior, test the live flows with valid keys to ensure the app still works in production.
+
+## Notes
+
+- The app depends on external API availability.
+- API keys should be rotated if exposed in any public repository or deployment log.
+- The project should be treated as a production-ready Django app only after security settings are hardened.
+
+## License
+
+This project is for learning and personal use unless stated otherwise by the owner.

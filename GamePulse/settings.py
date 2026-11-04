@@ -31,15 +31,9 @@ NEWSDATA_API_KEY = os.environ.get('NEWSDATA_API_KEY', '')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or get_random_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get(
-        'DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0'
-    ).split(',')
-    if host.strip()
-]
+ALLOWED_HOSTS = ['gamevault-z6qh.onrender.com']
 
 
 # Application definition
