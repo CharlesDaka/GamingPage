@@ -10,7 +10,7 @@ from GamePulse.settings import RAWG_KEY
 from .models import Game
 
 def health_check(request):
-    return httpResponse("Healthy! OK", status=200)
+    return HttpResponse("Healthy! OK", status=200)
     
 
 def normalize_game(game):
