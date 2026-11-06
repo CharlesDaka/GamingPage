@@ -1,7 +1,7 @@
 import json
 from urllib.parse import urlencode
 
-from django.http import JsonResponse
+from django.http import JsonResponse, httpResponse
 import requests
 from django.shortcuts import redirect, render
 from django.core.cache import cache
@@ -9,6 +9,9 @@ from django.core.cache import cache
 from GamePulse.settings import RAWG_KEY
 from .models import Game
 
+def health_check(request):
+    return httpResponse("Healthy! OK", status=200)
+    
 
 def normalize_game(game):
     genres = game.get('genres') or []
