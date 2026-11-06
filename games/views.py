@@ -1,7 +1,7 @@
 import json
 from urllib.parse import urlencode
 
-from django.http import JsonResponse, httpResponse
+from django.http import JsonResponse, HttpResponse
 import requests
 from django.shortcuts import redirect, render
 from django.core.cache import cache
