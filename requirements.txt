@@ -4,3 +4,4 @@ dotenv
 requests
 newsdataapi
 gunicorn
+whitenoise
