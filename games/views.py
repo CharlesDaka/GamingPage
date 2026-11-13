@@ -103,11 +103,6 @@ def games_page(request, platform='All'):
             'anal', 'renpy', 'harem',
         }
 
-        # if store is itch.io, remove that game from the results
-        for game in data.get('results', []):
-            if any(store.get('store_name') == 'itch.io' for store in game.get('stores', [])):
-                data['results'].remove(game)
-
         for game in data.get('results', []):
             game['tags'] = [tag['name'] for tag in game.get('tags', [])]
             game['isAdult'] = any(tag.casefold() in adult_tags for tag in game['tags'])
