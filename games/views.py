@@ -67,7 +67,7 @@ def games_page(request, platform='All'):
         platform_id, classForPlatform = platform_mapping['All']
         err_message = f"Invalid platform: \"{platform}\". Showing games for all platforms."
 
-    cache_key = f'rawg_games_{platform_id}_{query}_{sort_by}_{page}_at_gamepulse_siu'
+    cache_key = f'rawg_games_{platform_id}_{query}_{sort_by}_{page}_adultfilter_v2'
 
     cached_data = cache.get(cache_key)
 
@@ -96,37 +96,16 @@ def games_page(request, platform='All'):
         r.raise_for_status()
         data = r.json()
 
-        # Define a set of adult-related tags to filter out adult games
         adult_tags = {
-            'Mature',
-            'Adult Only',
-            'Sexual Content',
-            'Nudity',
-            'Violence',
-            'Gore',
-            'Hentai',
-            'Clicker',
-            'Idler',
-            'Хентай',
-            'Idle-игра'
+            'mature', 'adult only', 'sexual content', 'nudity', 'violence',
+            'gore', 'hentai', 'clicker', 'idler', 'хентай', 'idle-игра'
         }
 
-        # Add a new key 'isAdult' to each game in the results based on its tags
         for game in data.get('results', []):
             game['tags'] = [tag['name'] for tag in game.get('tags', [])]
-            if any(tag in adult_tags for tag in game['tags']):
-                game['isAdult'] = True
-            else:
-                game['isAdult'] = False
+            game['isAdult'] = any(tag.casefold() in adult_tags for tag in game['tags'])
 
-        # if the query contains adult-related keywords, filter out adult games from the results
-        adult_keywords = {'adult', 'mature', 'sexual', 'nudity', 'violence', 'gore', 'hentai', 'clicker', 'idler'}
-        if any(keyword in query.lower() for keyword in adult_keywords):
-            data['results'] = [game for game in data.get('results', []) if not game.get('isAdult')]
-
-        # if game contains adult-related tags, filter out adult games from the results   
-        if game.get('isAdult'):
-            data['results'] = [game for game in data.get('results', []) if not game.get('isAdult')]
+        data['results'] = [game for game in data.get('results', []) if not game['isAdult']]
 
         # Define a function to generate the URL for the next and previous pages
         def page_url(page_number):
@@ -167,7 +146,7 @@ def games_page(request, platform='All'):
             'totalCount': len(games),
         }
         cache.set(cache_key, data_to_cache, timeout=43200)
-        err_message = "The main database is temporarily unavailable. Using Backup games."
+        err_message = "The main database is temporarily unavailable. Using Secondary games."
         
     return JsonResponse({
         **data_to_cache,

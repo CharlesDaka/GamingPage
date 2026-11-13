@@ -70,6 +70,27 @@ class GamesPageTests(SimpleTestCase):
         self.assertEqual(mock_get.call_args.kwargs['params']['search'], 'portal')
         mock_cache_set.assert_called_once()
 
+    @patch('games.views.cache.set')
+    @patch('games.views.cache.get', return_value=None)
+    @patch('games.views.requests.get')
+    def test_filters_adult_tagged_games_regardless_of_last_result(self, mock_get, mock_cache_get, mock_cache_set):
+        api_response = Mock()
+        api_response.json.return_value = {
+            'count': 3,
+            'results': [
+                {'id': 1, 'name': 'Portal 2', 'tags': []},
+                {'id': 2, 'name': 'Adult game', 'tags': [{'name': 'Adult Only'}]},
+                {'id': 3, 'name': 'Another game', 'tags': []},
+            ],
+        }
+        mock_get.return_value = api_response
+        request = self.factory.get('/games/All')
+
+        response = games_page(request, platform='All')
+        payload = json.loads(response.content)
+
+        self.assertEqual([game['id'] for game in payload['games']], [1, 3])
+
     @patch('games.views.requests.get')
     @patch('games.views.cache.get')
     def test_cached_page_skips_api_request(self, mock_cache_get, mock_get):
