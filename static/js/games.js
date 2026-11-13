@@ -78,8 +78,6 @@ function fetchGames(platform, sortByValue) {
         fetch(`/games/${platform}?${params.toString()}`)
         .then(r => r.json())
         .then(d => {
-            console.log(d.games);
-            
             if (d.message) {
                 document.querySelector('.pagination').style.display = 'none';
                 document.querySelector('.game-fetching').style.display = 'none';

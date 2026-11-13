@@ -96,6 +96,39 @@ def games_page(request, platform='All'):
         r.raise_for_status()
         data = r.json()
 
+        # Define a set of adult-related tags to filter out adult games
+        adult_tags = {
+            'Mature',
+            'Adult Only',
+            'Sexual Content',
+            'Nudity',
+            'Violence',
+            'Gore',
+            'Hentai',
+            'Clicker',
+            'Idler',
+            'Хентай',
+            'Idle-игра'
+        }
+
+        # Add a new key 'isAdult' to each game in the results based on its tags
+        for game in data.get('results', []):
+            game['tags'] = [tag['name'] for tag in game.get('tags', [])]
+            if any(tag in adult_tags for tag in game['tags']):
+                game['isAdult'] = True
+            else:
+                game['isAdult'] = False
+
+        # if the query contains adult-related keywords, filter out adult games from the results
+        adult_keywords = {'adult', 'mature', 'sexual', 'nudity', 'violence', 'gore', 'hentai', 'clicker', 'idler'}
+        if any(keyword in query.lower() for keyword in adult_keywords):
+            data['results'] = [game for game in data.get('results', []) if not game.get('isAdult')]
+
+        # if game contains adult-related tags, filter out adult games from the results   
+        if game.get('isAdult'):
+            data['results'] = [game for game in data.get('results', []) if not game.get('isAdult')]
+
+        # Define a function to generate the URL for the next and previous pages
         def page_url(page_number):
             query_params = {
                 'sort_by': sort_by,
@@ -212,7 +245,7 @@ def game_details(request, game_id):
             }
         cache.set(cache_key, details_to_cache, timeout=43200)
 
-    except requests.exceptions.HTTPError as error:
+    except (requests.exceptions.HTTPError, requests.exceptions.RequestException) as error:
         if error.response is not None and error.response.status_code == 404:
             return JsonResponse({'message': 'This game was not found.'}, status=404)
         d = None
@@ -233,9 +266,9 @@ def game_details(request, game_id):
         r = requests.get(freetogame_url)
         r.raise_for_status()
         games_list = r.json()
-        d = next((game for game in games_list if str(game.get('id')) == str(game_id)), None)
+
         if d is None:
-            return JsonResponse({'message': 'This game was not found in the backup database.'}, status=404)
+            return JsonResponse({'message': 'Game not found. Please try another game.'}, status=404)
         d = normalize_game(d)
         details_to_cache = {
             'gameDetails': d,
