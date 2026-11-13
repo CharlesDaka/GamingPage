@@ -98,7 +98,9 @@ def games_page(request, platform='All'):
 
         adult_tags = {
             'mature', 'adult only', 'sexual content', 'nudity', 'violence',
-            'gore', 'hentai', 'clicker', 'idler', 'хентай', 'idle-игра'
+            'gore', 'hentai', 'clicker', 'idler', 'хентай', 'idle-игра', 'sex',
+            'porn', 'nsfw', 'erotic', 'mature content', 'mature themes',
+            'anal', 'renpy', 'harem',
         }
 
         for game in data.get('results', []):
