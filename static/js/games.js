@@ -227,11 +227,20 @@ function searchGames(queryOverride = '') {
         window.location.href = `/?q=${encodeURIComponent(query)}`;
         return;
     }
-
-    document.querySelector('.game-fetching').style.display = 'flex';
+    
     document.querySelector('.cyberpunk-error-theme').style.display = 'none';
-    document.querySelector('.glitch-text').textContent = `SEARCHING FOR "${query.toUpperCase()}" GAMES...`
-    document.querySelector('.platform-on-loading').textContent = `PLATFORM: ${currentPlatform}`
+
+    // when user clicks search btn, scroll into the searching animation container
+    const gameFetchingEl = document.querySelector('.game-fetching');
+    if (gameFetchingEl) {
+        gameFetchingEL.style.display = 'flex';
+        requestAnimationFrame(() => {
+            gameFetchingEL.scrollIntoView({ behavior: 'instant', block: 'start' });
+        });
+        // update the contents inside the animation container to match the search details
+        document.querySelector('.glitch-text').textContent = `SEARCHING FOR "${query.toUpperCase()}" GAMES...`
+        document.querySelector('.platform-on-loading').textContent = `PLATFORM: ${currentPlatform}`
+    }   
     
     if (query) {
         const params = new URLSearchParams({ q: query, sort_by: currentSort });
@@ -240,7 +249,7 @@ function searchGames(queryOverride = '') {
         .then(d => {
             const gamesContainer = document.querySelector('#game_section');
             gamesContainer.innerHTML = '';
-
+            
             if (d.message) {
                 document.querySelector('.pagination').style.display = 'none';
                 document.querySelector('.game-fetching').style.display = 'none';
