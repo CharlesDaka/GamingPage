@@ -20,10 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameDetailsPage.style.display = 'none';
     }
 
-    const sortSelect = document.querySelector('#sort-select');
     const gamesPage = document.querySelector('.games-page');
-    if (sortSelect && gamesPage) {
-        currentSort = sortSelect.value;
+    if (gamesPage) {
         const query = new URLSearchParams(window.location.search).get('q') || '';
         if (query) {
             const searchInput = document.querySelector('input[name="q"]');
@@ -32,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             searchGames(query);
         } else {
-            fetchGames(currentPlatform, currentSort);
+            fetchGames(currentPlatform, '-rating');
         }
 
         sortSelect.addEventListener('change', (event) => {
