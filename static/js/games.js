@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function fetchGames(platform, sortByValue) {
+    document.querySelector('#order_by_container').style.display = 'block';
+    
     currentPlatform = platform || 'All';
     currentSort = sortByValue || currentSort || '-rating';
     const gamesPage = document.querySelector('.games-page');
@@ -226,7 +228,8 @@ function searchGames(queryOverride = '') {
         window.location.href = `/?q=${encodeURIComponent(query)}`;
         return;
     }
-    
+
+    document.querySelector('#order_by_container').style.display = 'none';
     document.querySelector('.cyberpunk-error-theme').style.display = 'none';
 
     // when user clicks search btn, scroll into the searching animation container
