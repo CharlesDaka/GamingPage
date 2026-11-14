@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         gameDetailsPage.style.display = 'none';
     }
 
+    const sortSelect = document.querySelector('#sort-select');
     const gamesPage = document.querySelector('.games-page');
-    if (gamesPage) {
+    if (gamesPage && sortSelect) {
         const query = new URLSearchParams(window.location.search).get('q') || '';
         if (query) {
             const searchInput = document.querySelector('input[name="q"]');
@@ -231,7 +232,7 @@ function searchGames(queryOverride = '') {
     // when user clicks search btn, scroll into the searching animation container
     const gameFetchingEl = document.querySelector('.game-fetching');
     if (gameFetchingEl) {
-        gameFetchingEL.style.display = 'flex';
+        gameFetchingEl.style.display = 'flex';
         requestAnimationFrame(() => {
             gameFetchingEL.scrollIntoView({ behavior: 'instant', block: 'start' });
         });
