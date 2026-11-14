@@ -85,11 +85,14 @@ def games_page(request, platform='All'):
         'page_size': '40',
         'page': page,
         'platforms': platform_id,
-        'ordering': sort_by
     }
     
+    if not query:
+        params['ordering'] = sort_by
+        
     if query:
         params['search'] = query
+        params['page_size'] = '80'
 
     try:
         r = requests.get(url, params=params)
