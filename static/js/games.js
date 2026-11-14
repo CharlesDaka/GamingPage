@@ -156,7 +156,12 @@ function gamesPagination(link) {
     });
 
     const nextUrl = new URL(link, window.location.origin);
-    nextUrl.searchParams.set('sort_by', currentSort);
+    if (nextUrl.searchParams.has('q')) {
+        nextUrl.searchParams.delete('sort_by');
+    }
+    else {
+        nextUrl.searchParams.set('sort_by', currentSort);
+    }
 
     fetch(nextUrl)
     .then(r => r.json())
@@ -214,7 +219,6 @@ function gamesPagination(link) {
     .finally(() => { document.querySelector('.game-fetching').style.display = 'none'; });
 }
 
-
 function searchGames(queryOverride = '') {
     const searchInput = document.querySelector('input[name="q"]');
     const query = (queryOverride || searchInput?.value || '').trim();
@@ -228,12 +232,7 @@ function searchGames(queryOverride = '') {
     document.querySelector('.cyberpunk-error-theme').style.display = 'none';
     document.querySelector('.glitch-text').textContent = `SEARCHING FOR "${query.toUpperCase()}" GAMES...`
     document.querySelector('.platform-on-loading').textContent = `PLATFORM: ${currentPlatform}`
-
-    const animationView = document.querySelector('.game-fetching');
-    requestAnimationFrame(() => {
-        animationView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
+    
     if (query) {
         const params = new URLSearchParams({ q: query, sort_by: currentSort });
         fetch(`/games/${currentPlatform}?${params.toString()}`)
