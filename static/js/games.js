@@ -593,7 +593,6 @@ function renderTrailer() {
                         <button class="quality-btn" onclick="changeTrailerQuality('480')">480p</button>
                         <button class="quality-btn" onclick="changeTrailerQuality('max')">Max</button>
                     </div>
-                    <p class="alert alert-warning">Please Note that all trailers are muted!</p>
                     <div class="slider-controls">
                         <b>Video ${index + 1} of ${trailers.length}</b>
                         <button class="prev-btn" onclick="changeTrailer(-1)" ${trailers.length < 2 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>
